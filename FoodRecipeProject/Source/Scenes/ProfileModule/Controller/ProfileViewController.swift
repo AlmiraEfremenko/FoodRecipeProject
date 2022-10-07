@@ -21,6 +21,7 @@ class ProfileViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        title = "Profile"
         view = ProfileView()
         let button = UIBarButtonItem(customView: profileView?.buttonSave ?? UIView())
         navigationItem.rightBarButtonItem = button
