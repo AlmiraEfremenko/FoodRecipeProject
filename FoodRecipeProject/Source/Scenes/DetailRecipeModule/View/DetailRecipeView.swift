@@ -5,7 +5,6 @@
 //  Created by MAC on 03.10.2022.
 //
 
-import Foundation
 import UIKit
 import SnapKit
 
@@ -23,8 +22,8 @@ class DetailRecipeView: UIView {
     private lazy var title: UILabel = {
         let title = UILabel()
         title.lineBreakMode = .byWordWrapping
-        title.numberOfLines = 0
-        title.font = .systemFont(ofSize: 20, weight: .medium)
+        title.numberOfLines = Metric.numberOfLines
+        title.font = .systemFont(ofSize: Metric.titleFont, weight: .medium)
         return title
     }()
     
@@ -72,15 +71,26 @@ class DetailRecipeView: UIView {
     
     private func setupLayout() {
         image.snp.makeConstraints { make in
-            make.top.equalTo(130)
+            make.top.equalTo(Metric.imageTopAnchor)
             make.centerX.equalToSuperview()
-            make.bottom.equalToSuperview().offset(-400)
+            make.height.equalTo(Metric.imageHeight)
             make.left.right.equalToSuperview()
         }
         
         title.snp.makeConstraints { make in
-            make.top.equalTo(image.snp.bottom).offset(50)
+            make.top.equalTo(image.snp.bottom).offset(Metric.titleOffset)
             make.centerX.equalToSuperview()
         }
+    }
+}
+
+extension DetailRecipeView {
+    
+    enum Metric {
+        static let numberOfLines = 2
+        static let titleFont: CGFloat = 20
+        static let imageTopAnchor: CGFloat = 130
+        static let imageHeight: CGFloat = 300
+        static let titleOffset: CGFloat = 50
     }
 }

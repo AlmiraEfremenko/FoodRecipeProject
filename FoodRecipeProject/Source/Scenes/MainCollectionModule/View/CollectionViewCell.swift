@@ -5,7 +5,6 @@
 //  Created by MAC on 30.09.2022.
 //
 
-import Foundation
 import UIKit
 import SnapKit
 
@@ -18,16 +17,16 @@ class CollectionViewCell: UICollectionViewCell {
     private lazy var image: UIImageView = {
         let image = UIImageView()
         image.clipsToBounds = true
-        image.layer.cornerRadius = 3
-        image.contentMode = .scaleAspectFit
+        image.layer.cornerRadius = Metric.cornerRadius
+        image.contentMode = .scaleAspectFill
         return image
     }()
     
     private lazy var title: UILabel = {
         let title = UILabel()
         title.lineBreakMode = .byWordWrapping
-        title.numberOfLines = 0
-        title.font = .systemFont(ofSize: 15, weight: .medium)
+        title.numberOfLines = Metric.numberOfLines
+        title.font = .systemFont(ofSize: Metric.titleFont, weight: .medium)
         return title
     }()
     
@@ -73,17 +72,33 @@ class CollectionViewCell: UICollectionViewCell {
     // MARK: - Layout
     
     private func setupLayout() {
+        
         image.snp.makeConstraints { make in
             make.top.equalToSuperview()
-            make.bottom.equalToSuperview()
-            make.height.equalToSuperview()
-            make.width.equalToSuperview()
+            make.left.equalTo(Metric.imageLeftAnchor)
+            make.right.equalTo(Metric.imageRightAnchor)
+            make.height.equalTo(Metric.imageHeight)
         }
         
         title.snp.makeConstraints { make in
-            make.top.equalTo(image.snp.bottom).offset(5)
-            make.left.equalTo(15)
-            make.right.equalTo(-5)
+            make.top.equalTo(image.snp.bottom).offset(Metric.offset)
+            make.left.equalTo(Metric.titleLeftAnchor)
+            make.right.equalTo(Metric.titleRightAnchor)
         }
+    }
+}
+
+extension CollectionViewCell {
+    
+    enum Metric {
+        static let cornerRadius: CGFloat = 3
+        static let numberOfLines = 2
+        static let titleFont: CGFloat = 15
+        static let imageLeftAnchor: CGFloat = 10
+        static let imageRightAnchor: CGFloat = -10
+        static let imageHeight: CGFloat = 200
+        static let offset: CGFloat = 5
+        static let titleLeftAnchor: CGFloat = 10
+        static let titleRightAnchor: CGFloat = -10
     }
 }

@@ -5,7 +5,6 @@
 //  Created by MAC on 30.09.2022.
 //
 
-import Foundation
 import UIKit
 import SnapKit
 
@@ -16,7 +15,7 @@ class AuthView: UIView {
     private lazy var label: UILabel = {
         let label = UILabel()
         label.text = "Registration"
-        label.font = .systemFont(ofSize: 25, weight: .medium)
+        label.font = .systemFont(ofSize: Metric.labelFont, weight: .medium)
         return label
     }()
     
@@ -24,36 +23,26 @@ class AuthView: UIView {
         let stackView = UIStackView()
         stackView.axis = .vertical
         stackView.distribution = .fillEqually
-        stackView.spacing = 20
+        stackView.spacing = Metric.stackViewSpacing
         return stackView
     }()
     
-    lazy var nameUser: UITextField = {
-        let nameUser = UITextField()
-        nameUser.placeholder = "Name"
-        nameUser.layer.borderWidth = 1
-        nameUser.layer.borderColor = UIColor.gray.cgColor
-        nameUser.layer.cornerRadius = 10
-        nameUser.addPaddingToTextField()
-        return nameUser
-    }()
+    lazy var nameUser = UITextField(placeholder: "Name",
+                                    borderWidth: Metric.borderWidth,
+                                    borderColor: UIColor.gray.cgColor,
+                                    cornerRadius: Metric.cornerRadius)
     
-    lazy var cityName: UITextField = {
-        let cityName = UITextField()
-        cityName.placeholder = "City"
-        cityName.layer.borderWidth = 1
-        cityName.layer.borderColor = UIColor.gray.cgColor
-        cityName.layer.cornerRadius = 10
-        cityName.addPaddingToTextField()
-        return cityName
-    }()
+    lazy var cityName = UITextField(placeholder: "City",
+                                    borderWidth: Metric.borderWidth,
+                                    borderColor: UIColor.gray.cgColor,
+                                    cornerRadius: Metric.cornerRadius)
     
     lazy var phoneNumber: UITextField = {
         let phoneNumber = UITextField()
         phoneNumber.placeholder = "Phone number"
-        phoneNumber.layer.borderWidth = 1
-        phoneNumber.layer.borderColor = UIColor.gray.cgColor
-        phoneNumber.layer.cornerRadius = 10
+        phoneNumber.layer.borderWidth = Metric.borderWidth
+        phoneNumber.layer.borderColor = UIColor.specialLightBrown.cgColor
+        phoneNumber.layer.cornerRadius = Metric.cornerRadius
         phoneNumber.delegate = self
         phoneNumber.addPaddingToTextField()
         return phoneNumber
@@ -61,21 +50,15 @@ class AuthView: UIView {
     
     lazy var buttonProceed: UIButton = {
         let button = UIButton(type: .system)
-        button.backgroundColor = UIColor(red: 48/255, green: 189/255, blue: 117/255, alpha: 255/255)
-        button.layer.cornerRadius = 10
+        button.backgroundColor = .specialGreen
+        button.layer.cornerRadius = Metric.cornerRadius
         button.setTitle("Proceed", for: .normal)
         button.setTitleColor(.white, for: .normal)
         button.addTarget(self, action: #selector(tapButtonProceed), for: .touchUpInside)
         return button
     }()
     
-    lazy var buttonSave: UIButton = {
-        let button = UIButton(type: .system)
-        button.setTitle("Save", for: .normal)
-        button.setTitleColor(.blue, for: .normal)
-        button.addTarget(self, action: #selector(tapButtonSave), for: .touchUpInside)
-        return button
-    }()
+    lazy var buttonSave = SaveButton(type: .system)
     
     var isChangesButtonSave = false
     var actionButtonSave: (() -> Void)?
@@ -88,6 +71,7 @@ class AuthView: UIView {
         super.init(frame: frame)
         setupHierarhy()
         setupLayout()
+        buttonSave.addTarget(self, action: #selector(tapButtonSave), for: .touchUpInside)
     }
     
     required init?(coder: NSCoder) {
@@ -111,14 +95,14 @@ class AuthView: UIView {
         
         label.snp.makeConstraints { make in
             make.centerX.equalToSuperview()
-            make.top.equalTo(150)
+            make.top.equalTo(Metric.labelTopConstraints)
         }
         
         stackView.snp.makeConstraints { make in
-            make.top.equalTo(label.snp.bottom).offset(50)
+            make.top.equalTo(label.snp.bottom).offset(Metric.offset)
             make.centerX.equalToSuperview()
-            make.width.equalTo(300)
-            make.height.equalTo(200)
+            make.width.equalTo(Metric.stackViewWidth)
+            make.height.equalTo(Metric.stackViewHeight)
         }
         
         nameUser.snp.makeConstraints { make in
@@ -134,10 +118,10 @@ class AuthView: UIView {
         }
         
         buttonProceed.snp.makeConstraints { make in
-            make.top.equalTo(stackView.snp.bottom).offset(50)
+            make.top.equalTo(stackView.snp.bottom).offset(Metric.offset)
             make.centerX.equalToSuperview()
-            make.width.equalTo(150)
-            make.height.equalTo(50)
+            make.width.equalTo(Metric.buttonWidth)
+            make.height.equalTo(Metric.buttonHeight)
         }
     }
     
@@ -149,7 +133,7 @@ class AuthView: UIView {
         guard let city = cityName.text else { return }
         guard let phone = phoneNumber.text else { return }
         
-        if !name.isEmpty, !city.isEmpty, !phone.isEmpty && phone.count == 17 && isChangesButtonSave {
+        if !name.isEmpty, !city.isEmpty, !phone.isEmpty && phone.count == Metric.phoneCount && isChangesButtonSave {
             activeButtonProceed?()
         } else {
             incorrectData?()
@@ -200,5 +184,22 @@ extension AuthView: UITextFieldDelegate {
             }
         }
         return result
+    }
+}
+
+extension AuthView {
+    
+    enum Metric {
+        static let labelFont: CGFloat = 25
+        static let stackViewSpacing: CGFloat = 20
+        static let borderWidth: CGFloat = 1
+        static let cornerRadius: CGFloat = 10
+        static let labelTopConstraints: CGFloat = 150
+        static let offset: CGFloat = 50
+        static let stackViewWidth: CGFloat = 300
+        static let stackViewHeight: CGFloat = 200
+        static let buttonWidth: CGFloat = 150
+        static let buttonHeight: CGFloat = 50
+        static let phoneCount = 17
     }
 }

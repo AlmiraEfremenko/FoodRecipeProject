@@ -5,7 +5,6 @@
 //  Created by MAC on 06.10.2022.
 //
 
-import Foundation
 import UIKit
 import SnapKit
 
@@ -16,7 +15,8 @@ class FavoriteView: UIView {
     private lazy var image: UIImageView = {
         let image = UIImageView()
         image.clipsToBounds = true
-        image.image = UIImage(systemName: "heart.fill")?.withTintColor(.systemPink.withAlphaComponent(0.5), renderingMode: .alwaysOriginal)
+        image.image = UIImage(systemName: "heart.fill")
+        image.tintColor = .specialGreen
         image.contentMode = .scaleAspectFit
         return image
     }()
@@ -25,10 +25,12 @@ class FavoriteView: UIView {
         let title = UILabel()
         title.lineBreakMode = .byWordWrapping
         title.text = "Your Favorite recipe"
-        title.numberOfLines = 0
-        title.font = .systemFont(ofSize: 20, weight: .medium)
+        title.numberOfLines = Metric.numberOfLines
+        title.font = .systemFont(ofSize: Metric.titleFont, weight: .medium)
         return title
     }()
+    
+    // MARK: - Initial
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -53,13 +55,24 @@ class FavoriteView: UIView {
         image.snp.makeConstraints { make in
             make.centerX.equalToSuperview()
             make.centerY.equalToSuperview()
-            make.width.equalTo(150)
-            make.height.equalTo(150)
+            make.width.equalTo(Metric.imageWidth)
+            make.height.equalTo(Metric.imageHeight)
         }
         
         title.snp.makeConstraints { make in
-            make.top.equalTo(image.snp.bottom).offset(50)
+            make.top.equalTo(image.snp.bottom).offset(Metric.offset)
             make.centerX.equalToSuperview()
         }
+    }
+}
+
+extension FavoriteView {
+    
+    enum Metric {
+        static let numberOfLines = 2
+        static let titleFont: CGFloat = 20
+        static let imageWidth: CGFloat = 150
+        static let imageHeight: CGFloat = 150
+        static let offset: CGFloat = 50
     }
 }

@@ -5,7 +5,6 @@
 //  Created by MAC on 06.10.2022.
 //
 
-import Foundation
 import UIKit
 import SnapKit
 
@@ -15,8 +14,7 @@ class ProfileView: UIView {
     
     private lazy var avatar: UIImageView = {
         var avatar = UIImageView()
-        avatar.translatesAutoresizingMaskIntoConstraints = false
-        avatar.layer.cornerRadius = 150 / 2
+        avatar.layer.cornerRadius = Metric.cornerRadiusAvatar
         avatar.clipsToBounds = true
         avatar.image = UIImage(named: "avatar")
         return avatar
@@ -26,23 +24,20 @@ class ProfileView: UIView {
         let stackView = UIStackView()
         stackView.axis = .vertical
         stackView.distribution = .fillEqually
-        stackView.spacing = 20
+        stackView.spacing = Metric.stackViewSpacing
         return stackView
     }()
     
-    lazy var nameUser: UITextField = {
-        let nameUser = UITextField()
-        nameUser.placeholder = "Name"
-        nameUser.addPaddingToTextField()
-        return nameUser
-    }()
+    lazy var nameUser = UITextField(placeholder: "Name",
+                                    borderWidth: nil,
+                                    borderColor: nil,
+                                    cornerRadius: nil)
     
-    lazy var cityName: UITextField = {
-        let cityName = UITextField()
-        cityName.placeholder = "City"
-        cityName.addPaddingToTextField()
-        return cityName
-    }()
+    lazy var cityName = UITextField(placeholder: "City",
+                                    borderWidth: nil,
+                                    borderColor: nil,
+                                    cornerRadius: nil)
+    
     
     lazy var phoneNumber: UITextField = {
         let phoneNumber = UITextField()
@@ -52,13 +47,7 @@ class ProfileView: UIView {
         return phoneNumber
     }()
     
-    lazy var buttonSave: UIButton = {
-        let button = UIButton(type: .system)
-        button.setTitle("Save", for: .normal)
-        button.setTitleColor(.blue, for: .normal)
-        button.addTarget(self, action: #selector(tapButtonSave), for: .touchUpInside)
-        return button
-    }()
+    lazy var buttonSave = SaveButton(type: .system)
     
     var isChangesButtonSave = false
     var actionButtonSave: (() -> Void)?
@@ -69,6 +58,7 @@ class ProfileView: UIView {
         super.init(frame: frame)
         setupHierarhy()
         setupLayout()
+        buttonSave.addTarget(self, action: #selector(tapButtonSave), for: .touchUpInside)
     }
     
     required init?(coder: NSCoder) {
@@ -91,15 +81,15 @@ class ProfileView: UIView {
         
         avatar.snp.makeConstraints { make in
             make.centerX.equalToSuperview()
-            make.top.equalTo(100)
-            make.height.width.equalTo(150)
+            make.top.equalTo(Metric.topAvatarAnchor)
+            make.height.width.equalTo(Metric.heightWidthAvatarAnchor)
         }
         
         stackView.snp.makeConstraints { make in
-            make.top.equalTo(avatar.snp.bottom).offset(50)
+            make.top.equalTo(avatar.snp.bottom).offset(Metric.offset)
             make.centerX.equalToSuperview()
-            make.width.equalTo(300)
-            make.height.equalTo(200)
+            make.width.equalTo(Metric.stackViewWidth)
+            make.height.equalTo(Metric.stackViewHeight)
         }
         
         nameUser.snp.makeConstraints { make in
@@ -159,5 +149,18 @@ extension ProfileView: UITextFieldDelegate {
             }
         }
         return result
+    }
+}
+
+extension ProfileView {
+    
+    enum Metric {
+        static let cornerRadiusAvatar: CGFloat = 150 / 2
+        static let stackViewSpacing: CGFloat = 20
+        static let topAvatarAnchor: CGFloat = 170
+        static let heightWidthAvatarAnchor: CGFloat = 150
+        static let offset: CGFloat = 50
+        static let stackViewWidth: CGFloat = 300
+        static let stackViewHeight: CGFloat = 200
     }
 }

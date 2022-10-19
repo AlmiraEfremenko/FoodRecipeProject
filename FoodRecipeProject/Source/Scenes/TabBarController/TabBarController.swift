@@ -5,38 +5,58 @@
 //  Created by MAC on 05.10.2022.
 //
 
-import Foundation
 import UIKit
 
 class MainTabBarController: UITabBarController {
     
+    // MARK: - Lifecycle
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-        generateTabBar()
+        setupTabBar()
+        setupItems()
+        self.navigationItem.hidesBackButton = true
     }
     
-    private func generateTabBar() {
-        viewControllers = [
-            generateViewControllers(viewController: CollectionViewController(), navViewController: UINavigationController(),
-                                    title: "",
-                                    image: UIImage(systemName: "house.fill"),
-                                    tag: 0),
-            generateViewControllers(viewController: FavoriteViewController(), navViewController: UINavigationController(),
-                                    title: "",
-                                    image: UIImage(systemName: "heart.fill"),
-                                    tag: 1),
-            generateViewControllers(viewController: ProfileViewController(), navViewController: UINavigationController(),
-                                    title: "",
-                                    image: UIImage(systemName: "person.fill"),
-                                    tag: 2)
-        ]
+    // MARK: - SetupTabBar
+    
+    private func setupTabBar() {
+        tabBar.backgroundColor = .specialBackground
+        tabBar.layer.borderWidth = Metric.borderWidth
+        tabBar.layer.borderColor = UIColor.specialLightBrown.cgColor
+        tabBar.tintColor = .specialGreen
     }
     
-    private func generateViewControllers(viewController: UIViewController, navViewController: UINavigationController, title: String, image: UIImage?, tag: Int) -> UINavigationController {
-        navViewController.tabBarItem.title = title
-        navViewController.tabBarItem.image = image
-        navViewController.tabBarItem.tag = tag
-        navViewController.pushViewController(viewController, animated: false)
-        return navViewController
+    // MARK: - SetupItems
+    
+    private func setupItems() {
+        let navigationMainVC = UINavigationController()
+        let mainVC = CollectionViewController()
+        navigationMainVC.pushViewController(mainVC, animated: true)
+        
+        let favoriteVC = FavoriteViewController()
+        
+        let navigationProfileVC = UINavigationController()
+        let profileVC = ProfileViewController()
+        navigationProfileVC.pushViewController(profileVC, animated: true)
+        
+        setViewControllers([navigationMainVC, favoriteVC, navigationProfileVC], animated: true)
+        
+        guard let items = tabBar.items else { return }
+        
+        items[0].title = "Main"
+        items[1].title = "Favorite"
+        items[2].title = "Profile"
+        
+        items[0].image = UIImage(systemName: "house.fill")
+        items[1].image = UIImage(systemName: "heart.fill")
+        items[2].image = UIImage(systemName: "person.fill")
+    }
+}
+
+extension MainTabBarController {
+    
+    enum Metric {
+        static let borderWidth = 0.5
     }
 }
