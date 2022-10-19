@@ -14,12 +14,18 @@ protocol NetworkService {
 class NetworkManager: NetworkService {
     
     func fetchData(completion: @escaping ((ModelCollectionRecipe) -> Void)) {
-        var urlString = URL(string: "https://api.spoonacular.com/recipes/complexSearch?%20")
         
-        urlString?.append(queryItems: [URLQueryItem(name: "query", value: "pasta"),
-                                       URLQueryItem(name: "apiKey", value: "35cfbd92c4f2445693cd12ad0dbd80af")])
+        var urlString = URLComponents(string: "https://api.spoonacular.com/recipes/complexSearch?%20")
         
-        guard let url = urlString else { return }
+        let queryItems = [
+            URLQueryItem(name: "query", value: "pasta"),
+            URLQueryItem(name: "apiKey", value: "35cfbd92c4f2445693cd12ad0dbd80af")
+        ]
+        
+        urlString?.queryItems = queryItems
+        
+        guard let url = urlString?.url else { return }
+        
         URLSession.shared.dataTask(with: url, completionHandler: { (data, response, error) -> Void in
             if let error = error {
                 print(error)
