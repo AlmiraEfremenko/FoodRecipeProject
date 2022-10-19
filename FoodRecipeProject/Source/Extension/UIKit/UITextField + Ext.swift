@@ -5,7 +5,6 @@
 //  Created by MAC on 06.10.2022.
 //
 
-import Foundation
 import UIKit
 
 // MARK: - Settings padding in textField
