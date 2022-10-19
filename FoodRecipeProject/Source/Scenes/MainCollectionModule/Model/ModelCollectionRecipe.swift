@@ -17,6 +17,7 @@ struct ModelCollectionRecipe: Codable {
 }
 
 // MARK: - Result
+
 struct Result: Codable {
     let id: Int
     let title: String

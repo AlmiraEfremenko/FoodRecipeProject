@@ -5,7 +5,6 @@
 //  Created by MAC on 06.10.2022.
 //
 
-import Foundation
 import UIKit
 
 class ProfileViewController: UIViewController {
@@ -21,12 +20,15 @@ class ProfileViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        title = "Profile"
         view = ProfileView()
-        let button = UIBarButtonItem(customView: profileView?.buttonSave ?? UIView())
-        navigationItem.rightBarButtonItem = button
+        configureButtonSave()
         showDataUser()
         actionSaveDataUserAfterEdit()
+    }
+    
+    private func configureButtonSave() {
+        let button = UIBarButtonItem(customView: profileView?.buttonSave ?? UIView())
+        navigationItem.rightBarButtonItem = button
     }
     
     private func actionSaveDataUserAfterEdit() {
@@ -38,6 +40,7 @@ class ProfileViewController: UIViewController {
             let userObject = UserModel(name: name,
                                        city: city,
                                        phone: phone)
+            
             UserSettings.userModel = userObject
             self.showDataUser()
         }

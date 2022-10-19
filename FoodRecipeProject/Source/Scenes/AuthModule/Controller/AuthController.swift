@@ -5,7 +5,6 @@
 //  Created by MAC on 30.09.2022.
 //
 
-import Foundation
 import UIKit
 
 class AuthController: UIViewController {
@@ -32,10 +31,11 @@ class AuthController: UIViewController {
     // MARK: - Save data user
     
     private func saveDataUser() {
-        registrationView?.actionButtonSave = {
-            guard let name = self.registrationView?.nameUser.text else { return }
-            guard let city = self.registrationView?.cityName.text else { return }
-            guard let phone = self.registrationView?.phoneNumber.text else { return }
+        registrationView?.actionButtonSave = { [weak self] in
+            
+            guard let name = self?.registrationView?.nameUser.text else { return }
+            guard let city = self?.registrationView?.cityName.text else { return }
+            guard let phone = self?.registrationView?.phoneNumber.text else { return }
             
             let userObject = UserModel(name: name,
                                        city: city,
@@ -48,6 +48,7 @@ class AuthController: UIViewController {
     
     private func actionCorrectData() {
         registrationView?.incorrectData = { [weak self] in
+            
             let alertController = UIAlertController(title: nil, message: "Enter all the data and click save", preferredStyle: .alert)
             let action = UIAlertAction(title: "OK", style: .default) { (action) in
             }
@@ -60,6 +61,7 @@ class AuthController: UIViewController {
     
     private func getMainCollectionFood() {
         registrationView?.activeButtonProceed = { [weak self] in
+            
             let tabBar = MainTabBarController()
             self?.navigationController?.pushViewController(tabBar, animated: false)
         }
