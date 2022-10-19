@@ -10,21 +10,22 @@ import Foundation
 final class UserSettings {
     
     private enum SettingsKey: String {
-        case usermodel
+        case userModel
     }
     
     static var userModel: UserModel? {
         get {
-            guard let savedData = UserDefaults.standard.object(forKey: SettingsKey.usermodel.rawValue) as? Data,
-                  let decodedModel = try? NSKeyedUnarchiver.unarchiveTopLevelObjectWithData(savedData) as? UserModel else { return nil}
+            guard let savedData = UserDefaults.standard.object(forKey: SettingsKey.userModel.rawValue) as? Data,
+                  let decodedModel = try? NSKeyedUnarchiver.unarchiveTopLevelObjectWithData(savedData) as? UserModel
+            else { return nil }
             return decodedModel
         }
         set {
             let defaults = UserDefaults.standard
-            let key = SettingsKey.usermodel.rawValue
+            let key = SettingsKey.userModel.rawValue
             
-            if let userModel = newValue {
-                if let saveData = try? NSKeyedArchiver.archivedData(withRootObject: userModel, requiringSecureCoding: false) {
+            if let newUserModel = newValue {
+                if let saveData = try? NSKeyedArchiver.archivedData(withRootObject: newUserModel, requiringSecureCoding: false) {
                     defaults.set(saveData, forKey: key)
                 } else {
                     defaults.removeObject(forKey: key)
